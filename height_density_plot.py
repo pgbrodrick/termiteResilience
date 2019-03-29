@@ -7,7 +7,9 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
+from scipy import stats
 import sys, os
+from matplotlib.lines import Line2D
 
 def plot_lhist(hist,edge):
   hist = hist.tolist()
@@ -194,18 +196,19 @@ for _t in range(0,len(un_treat)):
  
 
 plt.savefig('figs/figure_3.png',dpi=200)
-quit()
-
+plt.clf()
 
 
 
 
 
 ############################## Figure 4 ###########################################
+fig = plt.figure(figsize=(7,6))
 
 color_ref_dict = ['blue','orange','green','red']
 color_ref = [mpl.colors.to_rgba(x) for x in color_ref_dict]
 
+treatment = np.array(df['treatment'])
 colors = np.ones((len(treatment),3))
 for i in range(0,len(un_treat)):
   colors[treatment == un_treat[i],:] = np.array(color_ref[i])[:3]
@@ -232,8 +235,8 @@ for _tr in range(len(un_treat)):
   legend_elements.append(Line2D([0], [0], color=color_ref_dict[_tr], label=un_treat_label[_tr] + ', R$^2=$' +  str(round(r_value**2,2)),lw=2,ls='-'))
 
 slope, intercept, r_value, p_value, std_err = stats.linregress(height[valid],density[valid])
-plt.legend(handles=legend_elements,fontsize=6)
+plt.legend(handles=legend_elements,fontsize=8)
 
-plt.savefig('figs/figure_4.png',dpi=200)
+plt.savefig('figs/figure_4.png',dpi=200,bbox_inches='tight')
 
 
