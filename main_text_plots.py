@@ -33,19 +33,17 @@ def plot_lhist(hist,edge):
 ############################ Figure 3 ################################
 
 fig = plt.figure(figsize=(12,8))
-#gs = gridspec.GridSpec(3, 4)
-#gs.update(wspace=0.3,hspace=1.0)
 
 subsample_size = 1000
-df = pd.read_csv('bootstrapped_results/mc_results_ss_' + str(subsample_size) + '.csv',sep=',')
+bootstrap_df = pd.read_csv('bootstrapped_results/ss_' + str(subsample_size) + '.csv',sep=',')
 
-density = np.array(df['mound_density'])
-height = np.array(df['mean_mound_height'])
-cover_g1 = np.array(df['cover_g1'])
-cover_g3 = np.array(df['cover_g3'])
-cover_b13 = np.array(df['cover_b13'])
-treatment = np.array(df['treatment'])
-reps = np.array(df['rep_poly_count'])
+density = np.array(bootstrap_df['mound_density'])
+height = np.array(bootstrap_df['mean_mound_height'])
+cover_g1 = np.array(bootstrap_df['cover_g1'])
+cover_g3 = np.array(bootstrap_df['cover_g3'])
+cover_b13 = np.array(bootstrap_df['cover_b13'])
+treatment = np.array(bootstrap_df['treatment'])
+reps = np.array(bootstrap_df['rep_poly_count'])
 
 un_treat = np.unique(treatment)
 un_treat = un_treat[un_treat != 'nature_reserve']
@@ -79,12 +77,10 @@ plt.legend(un_treat_label)
 ################# 3b
 
 
-key_df = pd.read_csv('polygon_info/polygon_key.csv',sep=',')
-un_treat = np.unique(np.array(key_df['treatment']))
-print(un_treat)
+key_bootstrap_df = pd.read_csv('polygon_info/polygon_key.csv',sep=',')
+un_treat = np.unique(np.array(key_bootstrap_df['treatment']))
 un_treat_label = ['Subsistance Agriculture','Communal Grazing', 'Kruger NP','Private Reserve']
 
-#ax = plt.subplot(gs[:2, 2:])
 ax = fig.add_axes([0.52,0.96,0.02,0.02],zorder=1)
 plt.text(0,0,'b',fontweight='bold')
 plt.axis('off')
@@ -113,32 +109,18 @@ plt.legend(un_treat_label)
 
 
 def get_rk_extr(f):
-  df = np.array(pd.read_csv(f))
-  df = df[:,[0,2]]
-  df = df[np.isnan(df[:,1]) == False,:]
+  bootstrap_df = np.array(pd.read_csv(f))
+  bootstrap_df = bootstrap_df[:,[0,2]]
+  bootstrap_df = bootstrap_df[np.isnan(bootstrap_df[:,1]) == False,:]
 
-  df = df[df[:,0] < 250,:]
-  df[:,1] = np.power(df[:,1]/np.pi,0.5)
-  return df
+  bootstrap_df = bootstrap_df[bootstrap_df[:,0] < 250,:]
+  bootstrap_df[:,1] = np.power(bootstrap_df[:,1]/np.pi,0.5)
+  return bootstrap_df
 
 
-if (os.path.isfile('munged_dat/poly_areas.npz') == False):
-  poly_size_numbers = []
-  poly_size_area = []
-  for _f in range(0,len(polygon_files)):
-    poly_set = gdal.Open(polygon_files[_f],gdal.GA_ReadOnly)
-    poly = poly_set.ReadAsArray()
-    un_poly = np.unique(poly)
-    un_poly = un_poly[un_poly != 0]
-    un_poly = un_poly[un_poly != 31]
-    for m in range(0,len(un_poly)):
-      poly_size_numbers.append(un_poly[m])
-      poly_size_area.append(np.sum(poly == un_poly[m]))
-  np.savez('munged_dat/poly_areas.npz',poly_size_area = poly_size_area,poly_size_numbers=poly_size_numbers)
-else:
-  npzf = np.load('munged_dat/poly_areas.npz')
-  poly_size_numbers = npzf['poly_size_numbers'].tolist()
-  poly_size_area = npzf['poly_size_area'].tolist()
+npzf = np.load('munged_dat/poly_areas.npz')
+poly_size_numbers = npzf['poly_size_numbers'].tolist()
+poly_size_area = npzf['poly_size_area'].tolist()
 
 
 def bin_vals(x,binsize=5):
@@ -158,9 +140,9 @@ un_treat_label = ['Subsistance Agriculture','Communal Grazing', 'Kruger NP','Pri
 
 colors = ['blue','green','red','orange','grey','purple','cyan','brown','black','yellow']
 
-key_df = pd.read_csv('polygon_info/polygon_key.csv',sep=',')
-treatment = np.array(key_df['treatment'])
-polygon_number = np.array(key_df['polygon_number'])
+key_bootstrap_df = pd.read_csv('polygon_info/polygon_key.csv',sep=',')
+treatment = np.array(key_bootstrap_df['treatment'])
+polygon_number = np.array(key_bootstrap_df['polygon_number'])
 
 ax = fig.add_axes([0.07,0.39,0.02,0.02],zorder=1)
 plt.text(0,0,'c',fontweight='bold')
@@ -171,7 +153,7 @@ for _t in range(0,len(un_treat)):
   loc_poly = polygon_number[treatment == un_treat[_t]]
   for m in range(len(loc_poly)):
    if (loc_poly[m] != 31 and poly_size_area[poly_size_numbers.index(loc_poly[m])]/10000. > 300):
-    fname = 'roi_output/poly_'+str(loc_poly[m]) + '.0.csv' 
+    fname = 'rk_runs/roi_output/poly_'+str(loc_poly[m]) + '.0.csv' 
     rk = get_rk_extr(fname)
 
     ax = fig.add_axes([0.1 + 0.9/float(len(un_treat)) * _t,0.1,0.9/float(len(un_treat))-0.05,0.26],zorder=0)
@@ -208,7 +190,7 @@ fig = plt.figure(figsize=(7,6))
 color_ref_dict = ['blue','orange','green','red']
 color_ref = [mpl.colors.to_rgba(x) for x in color_ref_dict]
 
-treatment = np.array(df['treatment'])
+treatment = np.array(bootstrap_df['treatment'])
 colors = np.ones((len(treatment),3))
 for i in range(0,len(un_treat)):
   colors[treatment == un_treat[i],:] = np.array(color_ref[i])[:3]
