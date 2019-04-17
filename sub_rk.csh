@@ -5,6 +5,6 @@
 #SBATCH -o logs/o
 #SBATCH -e logs/e
 
-module load R/3.5.1
+#module load r/3.5.1
 
 Rscript calc_rk.r ${1} ${2} ${3}

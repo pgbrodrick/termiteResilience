@@ -22,14 +22,14 @@ args = parser.parse_args()
 bdir = '/Carnegie/DGE/Data/Shared/Labs/Asner/Private/Research/Researcher/Davies/4.Kruger/2.Termites_and_landuse/'
 
 mound_center_csvs = [\
-os.path.join(bdir,'shapefiles','andover_welv.csv'),\
-os.path.join(bdir,'shapefiles','erosionOliver.csv'),\
-os.path.join(bdir,'shapefiles','L1.csv'),\
-os.path.join(bdir,'shapefiles','L23.csv'),\
-os.path.join(bdir,'shapefiles','L45.csv'),\
-os.path.join(bdir,'shapefiles','L7.csv'),\
-os.path.join(bdir,'shapefiles','L8.csv'),\
-os.path.join(bdir,'shapefiles','nwaswitshaka.csv')]
+os.path.join('full_landscape_mound_predictions','andover_welv_cnn_mounds.csv'),\
+os.path.join('full_landscape_mound_predictions','erosionOliver_cnn_mounds.csv'),\
+os.path.join('full_landscape_mound_predictions','L1_cnn_mounds.csv'),\
+os.path.join('full_landscape_mound_predictions','L23_cnn_mounds.csv'),\
+os.path.join('full_landscape_mound_predictions','L45_cnn_mounds.csv'),\
+os.path.join('full_landscape_mound_predictions','L7_cnn_mounds.csv'),\
+os.path.join('full_landscape_mound_predictions','L8_cnn_mounds.csv'),\
+os.path.join('full_landscape_mound_predictions','nwaswitshaka_cnn_mounds.csv')]
 
 polygon_files = [\
 os.path.join(bdir,'polygons','andover_raster.tif'),\
