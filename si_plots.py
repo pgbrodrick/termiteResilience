@@ -73,7 +73,8 @@ def single_plot(subsample_size):
 fig = plt.figure(figsize=(10,16))
 
 
-########### SI Figure 3
+un_treat_label = ['Subsistance\nAgriculture','Communal\nGrazing', 'Kruger NP','Private\nReserve']
+########### SI Figure 1
 ss_list = [x*100 for x in range(4,20,2)]
 edge_buffer = 0.06
 n_rows = np.ceil(len(ss_list)/2.)
@@ -89,14 +90,16 @@ for _s in range(len(ss_list)):
 
     single_plot(ss_list[_s])
 
-plt.savefig('figs/figure_si_3.png',dpi=200,bbox_inches='tight')
+    if (_s == 3):
+      plt.legend(un_treat_label)
+
+plt.savefig('figs/figure_si_1.png',dpi=200,bbox_inches='tight')
 
 
 
 
-########### SI Figure 4
+########### SI Figure 2 / 3
 
-un_treat_label = ['Subsistance\nAgriculture','Communal\nGrazing', 'Kruger NP','Private\nReserve']
 
 def plot_rk(f,size_thresh):
   bootstrap_df = np.array(pd.read_csv(f))
@@ -108,8 +111,6 @@ def plot_rk(f,size_thresh):
 
   rk = bootstrap_df
 
-  if(ind[_t] == 0):
-    plt.title(un_treat_label[_t])
   plt.xlabel('Distance [m]')
   if (_t == 0):
     plt.ylabel('Ripley\'s K\n(L transformation)')
@@ -170,19 +171,54 @@ ind = np.zeros(4).astype(int)
 for _t in range(0,len(un_treat)):
   loc_poly = polygon_number[treatment == un_treat[_t]]
   for m in range(len(loc_poly)):
-   #if (loc_poly[m] != 31 and poly_size_area[poly_size_numbers.index(loc_poly[m])]/10000. > 300):
-   if (loc_poly[m] != 31 ):
+    #if (loc_poly[m] != 31 and poly_size_area[poly_size_numbers.index(loc_poly[m])]/10000. > 300):
+    if (loc_poly[m] != 31 ):
 
-    ax = plt.subplot(gs1[ind[_t],_t])
-    fname = 'rk_runs/roi_output/poly_'+str(loc_poly[m]) + '.0.csv' 
+      if (ind[_t] <= 5):
+        ax = plt.subplot(gs1[ind[_t],_t])
+        fname = 'rk_runs/roi_output/poly_'+str(loc_poly[m]) + '.0.csv' 
 
-    size_thresh = poly_size_area[poly_size_numbers.index(loc_poly[m])]/10000. > 300
-    plot_rk(fname,size_thresh)
+        size_thresh = poly_size_area[poly_size_numbers.index(loc_poly[m])]/10000. > 300
+        plot_rk(fname,size_thresh)
 
-    ind[_t] += 1
+        if(ind[_t] == 0):
+          plt.title(un_treat_label[_t])
+
+        ind[_t] += 1
  
 
-plt.savefig('figs/figure_si_4.png',dpi=200,bbox_inches='tight')
+plt.savefig('figs/figure_si_2.png',dpi=200,bbox_inches='tight')
+plt.clf()
+
+
+plt.figure(figsize=(8,28))
+gs1 = gridspec.GridSpec(14,4)
+gs1.update(hspace=0.8,wspace=0.5)
+
+ind = np.zeros(4).astype(int)
+for _t in range(0,len(un_treat)):
+  loc_poly = polygon_number[treatment == un_treat[_t]]
+  for m in range(len(loc_poly)):
+    #if (loc_poly[m] != 31 and poly_size_area[poly_size_numbers.index(loc_poly[m])]/10000. > 300):
+    if (loc_poly[m] != 31 ):
+
+      if (ind[_t] > 5):
+        ax = plt.subplot(gs1[ind[_t]-5,_t])
+        fname = 'rk_runs/roi_output/poly_'+str(loc_poly[m]) + '.0.csv' 
+
+        size_thresh = poly_size_area[poly_size_numbers.index(loc_poly[m])]/10000. > 300
+        plot_rk(fname,size_thresh)
+
+        if(ind[_t]-6 == 0):
+          plt.title(un_treat_label[_t])
+
+      ind[_t] += 1
+ 
+
+plt.savefig('figs/figure_si_3.png',dpi=200,bbox_inches='tight')
+
+
+
 
 
 
