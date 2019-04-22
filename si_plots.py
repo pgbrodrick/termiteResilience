@@ -83,18 +83,19 @@ plot_x_size = plot_y_size*2
 
 for _s in range(len(ss_list)):
 
-    if (_s < n_rows ):
-        ax = fig.add_axes([edge_buffer,edge_buffer * (1+_s) + plot_y_size * _s,plot_x_size,plot_y_size],zorder=1)
+    if (_s % 2 == 0):
+        x_pos = edge_buffer
+        y_pos = edge_buffer * (n_rows - np.floor(_s / 2)) + plot_y_size * (n_rows - np.floor(_s/2) - 1)
     else:
-        ax = fig.add_axes([edge_buffer*2+plot_x_size,edge_buffer * (2*n_rows-_s) + plot_y_size * (2*n_rows-_s-1),plot_x_size,plot_y_size],zorder=1)
+        x_pos = edge_buffer * 2 + plot_x_size
 
+    ax = fig.add_axes([x_pos, y_pos, plot_x_size, plot_y_size],zorder=1)
     single_plot(ss_list[_s])
 
     if (_s == 3):
       plt.legend(un_treat_label)
 
 plt.savefig('figs/figure_si_1.png',dpi=200,bbox_inches='tight')
-
 
 
 
