@@ -59,7 +59,7 @@ def single_plot(subsample_size):
       l_density = l_density[l_reps >= float(int(subsample_size)**2)/2.]
     
       h,b = np.histogram(l_density,bins=density_bins)
-      b,h = plot_lhist(h,b)
+      b,h = plot_lhist(h / np.max(h),b)
       plt.plot(h + float(n) / 15. * bin_step,b)
     
     plt.xlabel('Termite Mound Density [mounds ha$^{-1}$]')

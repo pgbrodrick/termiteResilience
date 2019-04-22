@@ -57,6 +57,7 @@ ax = fig.add_axes([0.1,0.5,0.4,0.45],zorder=0)
 
 ss = 0.10
 density_bins = np.arange(0.0,2.6,step=ss)
+c = 0
 for n in range(len(un_treat)):
   
   l_density = density[treatment == un_treat[n]]
@@ -64,11 +65,12 @@ for n in range(len(un_treat)):
   l_density = l_density[l_reps >= float(int(subsample_size)**2)/2.]
 
   h,b = np.histogram(l_density,bins=density_bins)
-  b,h = plot_lhist(h,b)
-  plt.plot(h + float(n) / 15. * ss,b)
+  b,h = plot_lhist(h / np.max(h),b)
+  plt.plot(h + float(c) / 15. * ss,b)
+  c+=1
 
 plt.xlabel('Termite Mound Density [mounds ha$^{-1}$]')
-plt.ylabel('Frequency')
+plt.ylabel('Relative Frequency')
 
 plt.legend(un_treat_label)
 
@@ -90,13 +92,15 @@ height_list = np.load('munged_dat/height_values.npy')
 
 ss = 0.10
 height_bins = np.arange(0.2,3.0,step=ss)
+c = 0
 for n in range(len(un_treat)):
   if (un_treat[n] != 'nature_reserve'):   
     h,b = np.histogram(height_list[n],bins=height_bins)
     b,h = plot_lhist(h/np.max(h),b)
     #b,h = plot_lhist(h,b)
-    plt.plot(h + float(n) / 15. * ss,b)
+    plt.plot(h + float(c) / 15. * ss,b)
     print(un_treat[n])
+    c+=1
 
 plt.xlabel('Termite Mound Height [m]')
 plt.ylabel('Relative Frequency')
@@ -179,7 +183,7 @@ for _t in range(0,len(un_treat)):
 
 plt.savefig('figs/figure_3.png',dpi=200)
 plt.clf()
-
+quit()
 
 
 
