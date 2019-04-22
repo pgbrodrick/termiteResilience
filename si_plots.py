@@ -63,7 +63,7 @@ def single_plot(subsample_size):
       plt.plot(h + float(n) / 15. * bin_step,b)
     
     plt.xlabel('Termite Mound Density [mounds ha$^{-1}$]')
-    plt.ylabel('Frequency')
+    plt.ylabel('Relative Frequency')
     
     plt.title('Bootstrap size: \n' + str(subsample_size**2/10000.) +  ' ha')
     #plt.legend(un_treat_label)
