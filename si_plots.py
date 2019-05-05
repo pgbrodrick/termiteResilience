@@ -223,6 +223,102 @@ plt.savefig('figs/figure_si_3.png',dpi=200,bbox_inches='tight')
 
 
 
+############ SI Figure 4 ################
+
+# Use the selected 100 ha bootstrap size
+
+bootstrap_df = pd.read_csv('bootstrapped_results/ss_1000.csv',sep=',')
+density = np.array(bootstrap_df['mound_density'])
+height = np.array(bootstrap_df['mean_mound_height'])
+cover_g1 = np.array(bootstrap_df['cover_g1'])
+cover_g3 = np.array(bootstrap_df['cover_g3'])
+cover_b13 = np.array(bootstrap_df['cover_b13'])
+treatment = np.array(bootstrap_df['treatment'])
+reps = np.array(bootstrap_df['rep_poly_count'])
+
+ax_s = 0.35
+ax_b = 0.075
+color_ref_dict = ['blue','orange','green','red']
+color_ref = [mpl.colors.to_rgba(x) for x in color_ref_dict]
+colors = np.ones((len(treatment),3))
+for i in range(0,len(un_treat)):
+  colors[treatment == un_treat[i],:] = np.array(color_ref[i])[:3]
+
+
+fig = plt.figure(figsize=(10,10))
+
+print('cover > 1, height')
+
+ax = fig.add_axes([ax_b,ax_b,ax_s,ax_s])
+plt.scatter(cover_g1,density,c=colors,s=1)
+for _n in range(len(un_treat_label)):
+    valid = np.logical_and(np.isnan(height) == False, un_treat[_n] == treatment)
+    slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g1[valid],height[valid])
+    print((un_treat_label[_n],r_value**2))
+
+plt.xlabel('Land Cover Fraction with Vegetation > 1 m')
+plt.ylabel('Mean Mound Height [m]')
+
+ax = fig.add_axes([ax_b,(ax_b*2+ax_s),ax_s,ax_s])
+plt.scatter(cover_g1,density,c=colors,s=1)
+slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g1,density)
+print('cover > 1, density')
+plt.xlabel('Land Cover Fraction with Vegetation > 1 m')
+plt.ylabel('Mound Density [Mounds ha$^{-1}$]')
+for _n in range(len(un_treat_label)):
+    valid = np.logical_and(np.isnan(density) == False, un_treat[_n] == treatment)
+    slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g1[valid],density[valid])
+    print((un_treat_label[_n],r_value**2))
+    plt.scatter(cover_g1[treatment == un_treat[_n]],density[treatment == un_treat[_n]],c=color_ref_dict[_n],s=1)
+plt.legend([x.replace('\n',' ') for x in un_treat_label])
+
+ax = fig.add_axes([(ax_b*2+ax_s),ax_b,ax_s,ax_s])
+plt.scatter(cover_g3,height,c=colors,s=1)
+slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g3[np.isnan(height) == False],height[np.isnan(height) == False])
+print('cover > 3, height')
+plt.xlabel('Land Cover Fraction with Vegetation > 3 m')
+plt.ylabel('Mean Mound Height [m]')
+for _n in range(len(un_treat_label)):
+    valid = np.logical_and(np.isnan(height) == False, un_treat[_n] == treatment)
+    slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g3[valid],height[valid])
+    print((un_treat_label[_n],r_value**2))
+
+ax = fig.add_axes([(ax_b*2+ax_s),(ax_b*2+ax_s),ax_s,ax_s])
+plt.scatter(cover_g3,density,c=colors,s=1)
+slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g3,density)
+print('cover > 3, density')
+plt.xlabel('Land Cover Fraction with Vegetation > 3 m')
+plt.ylabel('Mound Density [Mounds ha$^{-1}$]')
+for _n in range(len(un_treat_label)):
+    valid = np.logical_and(np.isnan(density) == False, un_treat[_n] == treatment)
+    slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g3[valid],density[valid])
+    print((un_treat_label[_n],r_value**2))
+
+ax = fig.add_axes([(ax_b*3+ax_s*2),ax_b,ax_s,ax_s])
+plt.scatter(cover_b13,height,c=colors,s=1)
+slope, intercept, r_value, p_value, std_err = stats.linregress(cover_b13[np.isnan(height) == False],height[np.isnan(height) == False])
+print('cover (> 1 and <=3), height')
+plt.xlabel('Cover (> 1 and <= 3) Fraction')
+plt.xlabel('Land Cover Fraction with Vegetation Between 1 and 3 m')
+plt.ylabel('Mean Mound Height [m]')
+for _n in range(len(un_treat_label)):
+    valid = np.logical_and(np.isnan(height) == False, un_treat[_n] == treatment)
+    slope, intercept, r_value, p_value, std_err = stats.linregress(cover_b13[valid],height[valid])
+    print((un_treat_label[_n],r_value**2))
+
+ax = fig.add_axes([(ax_b*3+ax_s*2),(ax_b*2+ax_s),ax_s,ax_s])
+plt.scatter(cover_b13,density,c=colors,s=1)
+slope, intercept, r_value, p_value, std_err = stats.linregress(cover_b13,density)
+print('cover (> 1 and <=3), density')
+plt.xlabel('Land Cover Fraction with Vegetation Between 1 and 3 m')
+plt.ylabel('Mound Density [Mounds ha$^{-1}$]')
+for _n in range(len(un_treat_label)):
+    valid = np.logical_and(np.isnan(density) == False, un_treat[_n] == treatment)
+    slope, intercept, r_value, p_value, std_err = stats.linregress(cover_b13[valid],density[valid])
+    print((un_treat_label[_n],r_value**2))
+
+plt.savefig('figs/figure_si_4.png',dpi=100,bbox_inches='tight')
+plt.clf()
 
 
 

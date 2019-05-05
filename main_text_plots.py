@@ -44,6 +44,7 @@ cover_g3 = np.array(bootstrap_df['cover_g3'])
 cover_b13 = np.array(bootstrap_df['cover_b13'])
 treatment = np.array(bootstrap_df['treatment'])
 reps = np.array(bootstrap_df['rep_poly_count'])
+rem = np.array(bootstrap_df['mean_rem'])
 
 un_treat = np.unique(treatment)
 un_treat = un_treat[un_treat != 'nature_reserve']
@@ -183,7 +184,6 @@ for _t in range(0,len(un_treat)):
 
 plt.savefig('figs/figure_3.png',dpi=200)
 plt.clf()
-quit()
 
 
 
@@ -222,6 +222,7 @@ for _tr in range(len(un_treat)):
 
 slope, intercept, r_value, p_value, std_err = stats.linregress(height[valid],density[valid])
 plt.legend(handles=legend_elements,fontsize=8)
+plt.ylim([0,2])
 
 plt.savefig('figs/figure_4.png',dpi=200,bbox_inches='tight')
 

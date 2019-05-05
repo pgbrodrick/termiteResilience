@@ -41,6 +41,17 @@ os.path.join(bdir,'polygons','landuse_7_raster.tif'),\
 os.path.join(bdir,'polygons','landuse_8_raster.tif'),\
 os.path.join(bdir,'polygons','nwas_raster.tif')]
 
+rem_files = [\
+os.path.join(bdir,'rem','andover_welv_rem.tif'),\
+os.path.join(bdir,'rem','erosionOliver_rem.tif'),\
+os.path.join(bdir,'rem','L1_rem.tif'),\
+os.path.join(bdir,'rem','L23_rem.tif'),\
+os.path.join(bdir,'rem','L45_rem.tif'),\
+os.path.join(bdir,'rem','L7_rem.tif'),\
+os.path.join(bdir,'rem','L8_rem.tif'),\
+os.path.join(bdir,'rem','nwaswitshaka_rem.tif')]
+
+
 tch_files = [\
 os.path.join('/lustre/scratch/pbrodrick/termite_tmp','andover_welv_tch'),\
 os.path.join('/lustre/scratch/pbrodrick/termite_tmp','erosionOliver_tch'),\
@@ -135,6 +146,9 @@ for _f in range(0,len(polygon_files)):
 
   tch_set = gdal.Open(tch_files[_f],gdal.GA_ReadOnly)
   tch = tch_set.ReadAsArray()
+
+  rem_set = gdal.Open(rem_files[_f],gdal.GA_ReadOnly)
+  rem = rem_set.ReadAsArray()
   
   per_ha_conv = 1.0e4/float(trans[1]*trans[1])
   
@@ -176,11 +190,14 @@ for _f in range(0,len(polygon_files)):
       ret_list.append(np.array(key_df['landscape'])[np.where(key_df['polygon_number'] == un_poly[m])][0])
       ret_list.append(i)
 
+      loc_rem = rem[y_b:y_t,x_b:x_t]
+      ret_list.append(np.mean(loc_rem[loc_rem != -9999]))
+
       output.append(np.array(ret_list))
   
 output = np.array(output)
 
-df = pd.DataFrame(data=output,columns=['polygon','mound_density','mean_mound_height','rep_poly_count','cover_g1','cover_g3','cover_b13','treatment','landscape','rep'])
+df = pd.DataFrame(data=output,columns=['polygon','mound_density','mean_mound_height','rep_poly_count','cover_g1','cover_g3','cover_b13','treatment','landscape','rep','mean_rem'])
 df.to_csv('bootstrapped_results/ss_' + str(subsample_size[0]) + '.csv',sep=',',index=False)
 
 
