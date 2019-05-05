@@ -49,6 +49,8 @@ rem = np.array(bootstrap_df['mean_rem'])
 un_treat = np.unique(treatment)
 un_treat = un_treat[un_treat != 'nature_reserve']
 un_treat_label = ['Subsistance Agriculture','Communal Grazing', 'Kruger NP','Private Reserve']
+color_ref = [[255,160,5],[182,229,255],[229,182,255],[237,126,87]]
+color_ref = [(np.array(x)/255.).tolist() for x in color_ref]
 
 ################# 3a
 ax = fig.add_axes([0.07,0.96,0.02,0.02],zorder=1)
@@ -67,7 +69,7 @@ for n in range(len(un_treat)):
 
   h,b = np.histogram(l_density,bins=density_bins)
   b,h = plot_lhist(h / np.max(h),b)
-  plt.plot(h + float(c) / 15. * ss,b)
+  plt.plot(h + float(c) / 15. * ss,b,c=color_ref[n])
   c+=1
 
 plt.xlabel('Termite Mound Density [mounds ha$^{-1}$]')
@@ -99,7 +101,7 @@ for n in range(len(un_treat)):
     h,b = np.histogram(height_list[n],bins=height_bins)
     b,h = plot_lhist(h/np.max(h),b)
     #b,h = plot_lhist(h,b)
-    plt.plot(h + float(c) / 15. * ss,b)
+    plt.plot(h + float(c) / 15. * ss,b,c=color_ref[c])
     print(un_treat[n])
     c+=1
 
@@ -143,7 +145,6 @@ un_treat = np.unique(treatment)
 un_treat = un_treat[un_treat != 'nature_reserve']
 un_treat_label = ['Subsistance Agriculture','Communal Grazing', 'Kruger NP','Private Reserve']
 
-colors = ['blue','green','red','orange','grey','purple','cyan','brown','black','yellow']
 
 key_bootstrap_df = pd.read_csv('polygon_info/polygon_key.csv',sep=',')
 treatment = np.array(key_bootstrap_df['treatment'])
@@ -191,8 +192,8 @@ plt.clf()
 ############################## Figure 4 ###########################################
 fig = plt.figure(figsize=(7,6))
 
-color_ref_dict = ['blue','orange','green','red']
-color_ref = [mpl.colors.to_rgba(x) for x in color_ref_dict]
+#color_ref_dict = ['blue','orange','green','red']
+#color_ref = [mpl.colors.to_rgba(x) for x in color_ref_dict]
 
 treatment = np.array(bootstrap_df['treatment'])
 colors = np.ones((len(treatment),3))
@@ -216,9 +217,9 @@ for _tr in range(len(un_treat)):
   slope, intercept, r_value, p_value, std_err = stats.linregress(height[subset],density[subset])
 
   plt.plot([np.min(height[valid]),np.max(height[valid])],[np.min(height[valid])*slope+intercept,np.max(height[valid])*slope+intercept],ls='-',lw=2.8,c='black')
-  plt.plot([np.min(height[valid]),np.max(height[valid])],[np.min(height[valid])*slope+intercept,np.max(height[valid])*slope+intercept],ls='-',lw=2,c=color_ref_dict[_tr])
+  plt.plot([np.min(height[valid]),np.max(height[valid])],[np.min(height[valid])*slope+intercept,np.max(height[valid])*slope+intercept],ls='-',lw=2,c=color_ref[_tr])
   print((tr,'R-squared = ' + str(r_value**2),'P value = ' + str(p_value)))
-  legend_elements.append(Line2D([0], [0], color=color_ref_dict[_tr], label=un_treat_label[_tr] + ', R$^2=$' +  str(round(r_value**2,2)),lw=2,ls='-'))
+  legend_elements.append(Line2D([0], [0], color=color_ref[_tr], label=un_treat_label[_tr] + ', R$^2=$' +  str(round(r_value**2,2)),lw=2,ls='-'))
 
 slope, intercept, r_value, p_value, std_err = stats.linregress(height[valid],density[valid])
 plt.legend(handles=legend_elements,fontsize=8)

@@ -60,7 +60,7 @@ def single_plot(subsample_size):
     
       h,b = np.histogram(l_density,bins=density_bins)
       b,h = plot_lhist(h / np.max(h),b)
-      plt.plot(h + float(n) / 15. * bin_step,b)
+      plt.plot(h + float(n) / 15. * bin_step,b,c=treat_colors[n])
     
     plt.xlabel('Termite Mound Density [mounds ha$^{-1}$]')
     plt.ylabel('Relative Frequency')
@@ -72,7 +72,8 @@ def single_plot(subsample_size):
 
 fig = plt.figure(figsize=(10,16))
 
-
+treat_colors = [[255,160,5],[182,229,255],[229,182,255],[237,126,87]]
+treat_colors = [(np.array(x)/255.).tolist() for x in treat_colors]
 un_treat_label = ['Subsistance\nAgriculture','Communal\nGrazing', 'Kruger NP','Private\nReserve']
 ########### SI Figure 1
 ss_list = [x*100 for x in range(4,20,2)]
@@ -238,11 +239,11 @@ reps = np.array(bootstrap_df['rep_poly_count'])
 
 ax_s = 0.35
 ax_b = 0.075
-color_ref_dict = ['blue','orange','green','red']
-color_ref = [mpl.colors.to_rgba(x) for x in color_ref_dict]
+#color_ref_dict = ['blue','orange','green','red']
+#color_ref = [mpl.colors.to_rgba(x) for x in color_ref_dict]
 colors = np.ones((len(treatment),3))
 for i in range(0,len(un_treat)):
-  colors[treatment == un_treat[i],:] = np.array(color_ref[i])[:3]
+  colors[treatment == un_treat[i],:] = treat_colors[i]
 
 
 fig = plt.figure(figsize=(10,10))
@@ -269,8 +270,12 @@ for _n in range(len(un_treat_label)):
     valid = np.logical_and(np.isnan(density) == False, un_treat[_n] == treatment)
     slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g1[valid],density[valid])
     print((un_treat_label[_n],r_value**2))
-    plt.scatter(cover_g1[treatment == un_treat[_n]],density[treatment == un_treat[_n]],c=color_ref_dict[_n],s=1)
+    plt.scatter(cover_g1[treatment == un_treat[_n]],density[treatment == un_treat[_n]],c=treat_colors[_n],s=1)
+
 plt.legend([x.replace('\n',' ') for x in un_treat_label])
+#legend = ax.legend([x.replace('\n',' ') for x in un_treat_label], frameon=True)
+#lgnd = plt.legend([x.replace('\n',' ') for x in un_treat_label])
+#ax.legend(markerscale=5)
 
 ax = fig.add_axes([(ax_b*2+ax_s),ax_b,ax_s,ax_s])
 plt.scatter(cover_g3,height,c=colors,s=1)
