@@ -49,7 +49,7 @@ rem = np.array(bootstrap_df['mean_rem'])
 un_treat = np.unique(treatment)
 un_treat = un_treat[un_treat != 'nature_reserve']
 un_treat_label = ['Subsistance Agriculture','Communal Grazing', 'Kruger NP','Private Reserve']
-color_ref = [[255,160,5],[182,229,255],[229,182,255],[237,126,87]]
+color_ref = [[255,170,0],[190,232,255],[56,168,0],[239,138,98]]
 color_ref = [(np.array(x)/255.).tolist() for x in color_ref]
 
 ################# 3a

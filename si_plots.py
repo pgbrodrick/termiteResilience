@@ -72,7 +72,7 @@ def single_plot(subsample_size):
 
 fig = plt.figure(figsize=(10,16))
 
-treat_colors = [[255,160,5],[182,229,255],[229,182,255],[237,126,87]]
+treat_colors = [[255,170,0],[190,232,255],[56,168,0],[239,138,98]]
 treat_colors = [(np.array(x)/255.).tolist() for x in treat_colors]
 un_treat_label = ['Subsistance\nAgriculture','Communal\nGrazing', 'Kruger NP','Private\nReserve']
 ########### SI Figure 1
