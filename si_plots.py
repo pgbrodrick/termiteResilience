@@ -45,7 +45,6 @@ def single_plot(subsample_size):
     cover_b13 = np.array(bootstrap_df['cover_b13'])
     treatment = np.array(bootstrap_df['treatment'])
     reps = np.array(bootstrap_df['rep_poly_count'])
-    print(subsample_size)
     
     un_treat = np.unique(treatment)
     un_treat = un_treat[un_treat != 'nature_reserve']
@@ -55,8 +54,6 @@ def single_plot(subsample_size):
     for n in range(len(un_treat)):
       
       l_density = density[treatment == un_treat[n]]
-      l_reps = reps[treatment == un_treat[n]]
-      l_density = l_density[l_reps >= float(int(subsample_size)**2)/2.]
     
       h,b = np.histogram(l_density,bins=density_bins)
       b,h = plot_lhist(h / np.max(h),b)
@@ -224,7 +221,7 @@ plt.savefig('figs/figure_si_3.png',dpi=200,bbox_inches='tight')
 
 
 
-############ SI Figure 4 ################
+############# SI Figure 4 ################
 
 # Use the selected 100 ha bootstrap size
 
@@ -239,8 +236,6 @@ reps = np.array(bootstrap_df['rep_poly_count'])
 
 ax_s = 0.35
 ax_b = 0.075
-#color_ref_dict = ['blue','orange','green','red']
-#color_ref = [mpl.colors.to_rgba(x) for x in color_ref_dict]
 colors = np.ones((len(treatment),3))
 for i in range(0,len(un_treat)):
   colors[treatment == un_treat[i],:] = treat_colors[i]
@@ -248,7 +243,6 @@ for i in range(0,len(un_treat)):
 
 fig = plt.figure(figsize=(10,10))
 
-print('cover > 1, height')
 
 ax = fig.add_axes([ax_b,ax_b,ax_s,ax_s])
 plt.scatter(cover_g1,density,c=colors,s=1)
@@ -327,6 +321,69 @@ plt.clf()
 
 
 
+
+
+
+############# Figure SI 5
+bootstrap_df = pd.read_csv('bootstrapped_results/ss_1000.csv',sep=',')
+rem = np.array(bootstrap_df['mean_rem'])
+tch = np.array(bootstrap_df['mean_tch'])
+treatment = np.array(bootstrap_df['treatment'])
+
+
+fig = plt.figure(figsize=(12,5))
+
+
+################# 5a
+ax = fig.add_axes([0.05,0.98,0.02,0.02],zorder=1)
+plt.text(0,0,'a',fontweight='bold')
+plt.axis('off')
+ax = fig.add_axes([0.1,0.1,0.4,0.9],zorder=0)
+
+ss = 0.10
+density_bins = np.arange(0.0,2.6,step=ss)
+c = 0
+for n in range(len(un_treat)):
+  
+  l_density = tch[treatment == un_treat[n]]
+
+  h,b = np.histogram(l_density,bins=density_bins)
+  b,h = plot_lhist(h / np.max(h),b)
+  plt.plot(h + float(c) / 15. * ss,b,c=treat_colors[n])
+  c+=1
+
+plt.xlabel('Top of Canopy Height [m ha$^{-1}$]')
+plt.ylabel('Relative Frequency')
+
+plt.legend([x.replace('\n',' ') for x in un_treat_label], frameon=True, loc='upper right')
+
+
+
+################# 5b
+
+ax = fig.add_axes([0.51,0.98,0.02,0.02],zorder=1)
+plt.text(0,0,'b',fontweight='bold')
+plt.axis('off')
+ax = fig.add_axes([0.55,0.1,0.4,0.9],zorder=0)
+
+ss = 0.05
+density_bins = np.arange(0.0,1.1,step=ss)
+c = 0
+for n in range(len(un_treat)):
+  
+  l_density = rem[treatment == un_treat[n]]
+
+  h,b = np.histogram(l_density,bins=density_bins)
+  b,h = plot_lhist(h / np.max(h),b)
+  plt.plot(h + float(c) / 15. * ss,b,c=treat_colors[n])
+  c+=1
+
+plt.xlabel('Relative Elevation [unitless]')
+plt.ylabel('Relative Frequency')
+
+plt.legend([x.replace('\n',' ') for x in un_treat_label], frameon=True, loc='upper right')
+
+plt.savefig('figs/figure_si_5.png',dpi=200,bbox_inches='tight')
 
 
 

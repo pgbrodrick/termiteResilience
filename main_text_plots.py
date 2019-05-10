@@ -64,8 +64,6 @@ c = 0
 for n in range(len(un_treat)):
   
   l_density = density[treatment == un_treat[n]]
-  l_reps = reps[treatment == un_treat[n]]
-  l_density = l_density[l_reps >= float(int(subsample_size)**2)/2.]
 
   h,b = np.histogram(l_density,bins=density_bins)
   b,h = plot_lhist(h / np.max(h),b)
@@ -225,6 +223,6 @@ slope, intercept, r_value, p_value, std_err = stats.linregress(height[valid],den
 plt.legend(handles=legend_elements,fontsize=8)
 plt.ylim([0,2])
 
-plt.savefig('figs/figure_4.png',dpi=200,bbox_inches='tight')
+plt.savefig('figs/figure_5.png',dpi=200,bbox_inches='tight')
 
 

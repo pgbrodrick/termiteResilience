@@ -191,13 +191,15 @@ for _f in range(0,len(polygon_files)):
       ret_list.append(i)
 
       loc_rem = rem[y_b:y_t,x_b:x_t]
+      loc_tch = tch[y_b:y_t,x_b:x_t]
       ret_list.append(np.mean(loc_rem[loc_rem != -9999]))
+      ret_list.append(np.mean(loc_tch[loc_tch != -9999]))
 
       output.append(np.array(ret_list))
   
 output = np.array(output)
 
-df = pd.DataFrame(data=output,columns=['polygon','mound_density','mean_mound_height','rep_poly_count','cover_g1','cover_g3','cover_b13','treatment','landscape','rep','mean_rem'])
+df = pd.DataFrame(data=output,columns=['polygon','mound_density','mean_mound_height','rep_poly_count','cover_g1','cover_g3','cover_b13','treatment','landscape','rep','mean_rem','mean_tch'])
 df.to_csv('bootstrapped_results/ss_' + str(subsample_size[0]) + '.csv',sep=',',index=False)
 
 
