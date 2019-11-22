@@ -10,6 +10,7 @@ import matplotlib.gridspec as gridspec
 from scipy import stats
 import sys, os
 from matplotlib.lines import Line2D
+from matplotlib.patches import Patch
 
 
 
@@ -243,19 +244,29 @@ for i in range(0,len(un_treat)):
 
 fig = plt.figure(figsize=(10,10))
 
+def make_legend(r2_values):
+    legend_elements = [Line2D([0], [0], marker='o', color='w', label=un_treat_label[x].replace('\n',' ') + ', R$^2$ = ' + str(round(r2_values[x],2)),
+                   markerfacecolor=treat_colors[x], markersize=8) for x in range(len(un_treat))]
+    return legend_elements
+
 
 ax = fig.add_axes([ax_b,ax_b,ax_s,ax_s])
-plt.scatter(cover_g1,density,c=colors,s=1)
+plt.scatter(cover_g1,height,c=colors,s=1)
+r2_values = []
 for _n in range(len(un_treat_label)):
     valid = np.logical_and(np.isnan(height) == False, un_treat[_n] == treatment)
     slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g1[valid],height[valid])
     print((un_treat_label[_n],r_value**2))
+    r2_values.append(r_value**2)
 
+ax.legend(handles=make_legend(r2_values), labelspacing=0.2, fontsize=8)
 plt.xlabel('Land Cover Fraction with Vegetation > 1 m')
 plt.ylabel('Mean Mound Height [m]')
+plt.ylim([0,2])
 
 ax = fig.add_axes([ax_b,(ax_b*2+ax_s),ax_s,ax_s])
 plt.scatter(cover_g1,density,c=colors,s=1)
+r2_values = []
 slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g1,density)
 print('cover > 1, density')
 plt.xlabel('Land Cover Fraction with Vegetation > 1 m')
@@ -264,15 +275,19 @@ for _n in range(len(un_treat_label)):
     valid = np.logical_and(np.isnan(density) == False, un_treat[_n] == treatment)
     slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g1[valid],density[valid])
     print((un_treat_label[_n],r_value**2))
-    plt.scatter(cover_g1[treatment == un_treat[_n]],density[treatment == un_treat[_n]],c=treat_colors[_n],s=1)
+    r2_values.append(r_value**2)
 
-plt.legend([x.replace('\n',' ') for x in un_treat_label])
+plt.ylim([0,2])
+ax.legend(handles=make_legend(r2_values), labelspacing=0.2, fontsize=8)
+
+#plt.legend([x.replace('\n',' ') for x in un_treat_label])
 #legend = ax.legend([x.replace('\n',' ') for x in un_treat_label], frameon=True)
 #lgnd = plt.legend([x.replace('\n',' ') for x in un_treat_label])
 #ax.legend(markerscale=5)
 
 ax = fig.add_axes([(ax_b*2+ax_s),ax_b,ax_s,ax_s])
 plt.scatter(cover_g3,height,c=colors,s=1)
+r2_values = []
 slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g3[np.isnan(height) == False],height[np.isnan(height) == False])
 print('cover > 3, height')
 plt.xlabel('Land Cover Fraction with Vegetation > 3 m')
@@ -281,10 +296,15 @@ for _n in range(len(un_treat_label)):
     valid = np.logical_and(np.isnan(height) == False, un_treat[_n] == treatment)
     slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g3[valid],height[valid])
     print((un_treat_label[_n],r_value**2))
+    r2_values.append(r_value**2)
+
+plt.ylim([0,2])
+ax.legend(handles=make_legend(r2_values), labelspacing=0.2, fontsize=8)
 
 ax = fig.add_axes([(ax_b*2+ax_s),(ax_b*2+ax_s),ax_s,ax_s])
 plt.scatter(cover_g3,density,c=colors,s=1)
 slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g3,density)
+r2_values = []
 print('cover > 3, density')
 plt.xlabel('Land Cover Fraction with Vegetation > 3 m')
 plt.ylabel('Mound Density [Mounds ha$^{-1}$]')
@@ -292,10 +312,15 @@ for _n in range(len(un_treat_label)):
     valid = np.logical_and(np.isnan(density) == False, un_treat[_n] == treatment)
     slope, intercept, r_value, p_value, std_err = stats.linregress(cover_g3[valid],density[valid])
     print((un_treat_label[_n],r_value**2))
+    r2_values.append(r_value**2)
+
+plt.ylim([0,2])
+ax.legend(handles=make_legend(r2_values), labelspacing=0.2, fontsize=8)
 
 ax = fig.add_axes([(ax_b*3+ax_s*2),ax_b,ax_s,ax_s])
 plt.scatter(cover_b13,height,c=colors,s=1)
 slope, intercept, r_value, p_value, std_err = stats.linregress(cover_b13[np.isnan(height) == False],height[np.isnan(height) == False])
+r2_values = []
 print('cover (> 1 and <=3), height')
 plt.xlabel('Cover (> 1 and <= 3) Fraction')
 plt.xlabel('Land Cover Fraction with Vegetation Between 1 and 3 m')
@@ -304,10 +329,15 @@ for _n in range(len(un_treat_label)):
     valid = np.logical_and(np.isnan(height) == False, un_treat[_n] == treatment)
     slope, intercept, r_value, p_value, std_err = stats.linregress(cover_b13[valid],height[valid])
     print((un_treat_label[_n],r_value**2))
+    r2_values.append(r_value**2)
+
+plt.ylim([0,2])
+ax.legend(handles=make_legend(r2_values), labelspacing=0.2, fontsize=8)
 
 ax = fig.add_axes([(ax_b*3+ax_s*2),(ax_b*2+ax_s),ax_s,ax_s])
 plt.scatter(cover_b13,density,c=colors,s=1)
 slope, intercept, r_value, p_value, std_err = stats.linregress(cover_b13,density)
+r2_values = []
 print('cover (> 1 and <=3), density')
 plt.xlabel('Land Cover Fraction with Vegetation Between 1 and 3 m')
 plt.ylabel('Mound Density [Mounds ha$^{-1}$]')
@@ -315,6 +345,10 @@ for _n in range(len(un_treat_label)):
     valid = np.logical_and(np.isnan(density) == False, un_treat[_n] == treatment)
     slope, intercept, r_value, p_value, std_err = stats.linregress(cover_b13[valid],density[valid])
     print((un_treat_label[_n],r_value**2))
+    r2_values.append(r_value**2)
+
+plt.ylim([0,2])
+ax.legend(handles=make_legend(r2_values), labelspacing=0.2, fontsize=8)
 
 plt.savefig('figs/figure_si_4.png',dpi=100,bbox_inches='tight')
 plt.clf()
