@@ -1,24 +1,8 @@
 import pandas as pd
 import numpy as np
-from sklearn import preprocessing
-from sklearn.ensemble import RandomForestRegressor
 
 import matplotlib as mpl
 mpl.use('Agg')
-import matplotlib.pyplot as plt
-import matplotlib
-import argparse
-import gdal
-from scipy import stats
-import matplotlib.cm as cm
-import matplotlib.gridspec as gridspec
-import os
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-from scipy.optimize import fmin_l_bfgs_b,minimize
-import multiprocessing
-import matplotlib.patches as mpatches
-import subprocess
-import sys
 from scipy import stats
 
 

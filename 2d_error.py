@@ -13,7 +13,7 @@ from tqdm import tqdm
 
 
 
-bdir = '/Carnegie/DGE/Data/Shared/Labs/Asner/Private/Research/Researcher/Davies/4.Kruger/2.Termites_and_landuse/'
+bdir = '/path/to/data/base/'
 
 act_df = pd.read_csv(sys.argv[1],sep=',')
 pred_df = pd.read_csv(sys.argv[2],sep=',')

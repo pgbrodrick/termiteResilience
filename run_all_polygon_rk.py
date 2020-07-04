@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 
 
-bdir = '/Carnegie/DGE/Data/Shared/Labs/Asner/Private/Research/Researcher/Davies/4.Kruger/2.Termites_and_landuse/'
+bdir = '/path/to/root/data/'
 
 mound_center_csvs = [\
 os.path.join('full_landscape_mound_predictions','andover_welv_cnn_mounds.csv'),\

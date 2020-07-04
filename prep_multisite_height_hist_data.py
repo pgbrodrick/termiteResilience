@@ -24,7 +24,6 @@ def get_mound_heights(roi,df,px_x,px_y):
 
 
 
-#bdir = '/Carnegie/DGE/Data/Shared/Labs/Asner/Private/Research/Researcher/Davies/4.Kruger/2.Termites_and_landuse/'
 bdir = 'conservative_tests'
 
 mound_center_csvs = [\

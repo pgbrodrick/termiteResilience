@@ -19,7 +19,7 @@ parser.add_argument('-samples_per_treatment',default=2000,type=int)
 args = parser.parse_args()
 
 
-bdir = '/Carnegie/DGE/Data/Shared/Labs/Asner/Private/Research/Researcher/Davies/4.Kruger/2.Termites_and_landuse/'
+bdir = 'path/to/data/base'
 
 mound_center_csvs = [\
 os.path.join('full_landscape_mound_predictions','andover_welv_cnn_mounds.csv'),\
@@ -53,14 +53,14 @@ os.path.join(bdir,'rem','nwaswitshaka_rem.tif')]
 
 
 tch_files = [\
-os.path.join('/lustre/scratch/pbrodrick/termite_tmp','andover_welv_tch'),\
-os.path.join('/lustre/scratch/pbrodrick/termite_tmp','erosionOliver_tch'),\
-os.path.join('/lustre/scratch/pbrodrick/termite_tmp','L1_tch'),\
-os.path.join('/lustre/scratch/pbrodrick/termite_tmp','L23_tch'),\
-os.path.join('/lustre/scratch/pbrodrick/termite_tmp','L45_tch'),\
-os.path.join('/lustre/scratch/pbrodrick/termite_tmp','L7_tch'),\
-os.path.join('/lustre/scratch/pbrodrick/termite_tmp','L8_tch'),\
-os.path.join('/lustre/scratch/pbrodrick/termite_tmp','nwaswitshaka_tch')]
+os.path.join(bdir,'tch','andover_welv_tch'),\
+os.path.join(bdir,'tch','erosionOliver_tch'),\
+os.path.join(bdir,'tch','L1_tch'),\
+os.path.join(bdir,'tch','L23_tch'),\
+os.path.join(bdir,'tch','L45_tch'),\
+os.path.join(bdir,'tch','L7_tch'),\
+os.path.join(bdir,'tch','L8_tch'),\
+os.path.join(bdir,'tch','nwaswitshaka_tch')]
 
 
 

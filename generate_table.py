@@ -2,16 +2,13 @@ import gdal
 import numpy as np
 import pandas as pd
 import os,sys,subprocess
-from scipy import signal
-import numpy.matlib
 
 import matplotlib as mpl
 mpl.use('Agg')
-import matplotlib.pyplot as plt
 
 
 
-bdir = '/Carnegie/DGE/Data/Shared/Labs/Asner/Private/Research/Researcher/Davies/4.Kruger/2.Termites_and_landuse/'
+bdir = 'path/to/root/raster/data'
 
 ensemble_files = [\
 os.path.join(bdir,'ensemble','andover_welv_128_256_ensemble.tif'),\
@@ -80,50 +77,7 @@ def all_calcs(roi,df,px_x,px_y):
 
 
 
-#key_df = pd.read_csv(bdir + '/polygons/polygon_key.csv',sep=',')
-#print(list(key_df))
-#output = []
-#
-#for _f in range(0,len(ensemble_files)):
-#  print(('filepair',mound_center_csvs[_f],polygon_files[_f]))
-#
-#  df = pd.read_csv(mound_center_csvs[_f],sep=',')
-#  # filter for only mounds < 5 m
-#
-#  poly_set = gdal.Open(polygon_files[_f],gdal.GA_ReadOnly)
-#  poly = poly_set.ReadAsArray()
-#  trans = poly_set.GetGeoTransform()
-#  
-#  per_ha_conv = 1.0e4/float(trans[1]*trans[1])
-#  
-#  px_y = ((np.array(df['y'])-trans[3])/float(trans[5])).astype(int)
-#  px_x = ((np.array(df['x'])-trans[0])/float(trans[1])).astype(int)
-#
-#  un_poly = np.unique(poly)
-#  un_poly = un_poly[un_poly != 0]
-#
-#
-#  for m in range(0,len(un_poly)):
-#    current_poly = un_poly[m]
-#    ret_list = all_calcs(poly == un_poly[m],df,px_x,px_y)
-#    ret_list.insert(0,int(un_poly[m]))
-#    ret_list.append(np.array(key_df['treatment'])[np.where(key_df['polygon_number'] == un_poly[m])][0])
-#    ret_list.append(np.array(key_df['landscape'])[np.where(key_df['polygon_number'] == un_poly[m])][0])
-#
-#    output.append(np.array(ret_list))
-#  
-#output = np.array(output)
-#print(output.shape)
-#
-#df = pd.DataFrame(data=output,columns=['polygon','mound_density','mean_mound_height','std_mound_height','area','mound_count','treatment','landscape'])
-#
-#treatment = np.array(key_df['treatment'])
-#polygon_number = np.array(key_df['polygon_number'])
-#un_treat = np.unique(treatment)
-#un_poly = np.unique(polygon_number)
-
-bdir = '/Carnegie/DGE/Data/Shared/Labs/Asner/Private/Research/Researcher/Davies/4.Kruger/2.Termites_and_landuse/'
-key_df = pd.read_csv(bdir + '/polygons/polygon_key.csv',sep=',')
+key_df = pd.read_csv('polygon_info/polygon_key.csv',sep=',')
 
 
 output_df = pd.DataFrame(data=np.array(key_df['landscape']),columns=['landscape'])

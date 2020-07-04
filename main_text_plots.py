@@ -190,8 +190,6 @@ plt.clf()
 ############################## Figure 4 ###########################################
 fig = plt.figure(figsize=(7,6))
 
-#color_ref_dict = ['blue','orange','green','red']
-#color_ref = [mpl.colors.to_rgba(x) for x in color_ref_dict]
 
 treatment = np.array(bootstrap_df['treatment'])
 colors = np.ones((len(treatment),3))
